@@ -16,7 +16,7 @@ export async function getContainer() {
     process.env.MONGODB_CONNECTION_STRING as string,
   );
 
-  const db = mongoClient.db(process.env.MONGODB_DATABASE_NAME as string);
+  const db = mongoClient.db(process.env.MONGODB_DATABASE_NAME || 'lnkbrd');
 
   container = {
     db,

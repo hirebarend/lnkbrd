@@ -7,30 +7,6 @@ data:
   {{ $key }}: {{ $value | b64enc | quote  }}
 {{- end }}
 ---
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: {{ .Release.Name }}-job
-spec:
-  template:
-    spec:
-      containers:
-      - name: {{ .Release.Name }}
-        image: ghcr.io/{{ .Values.USERNAME }}/fastify-boilerplate:main
-        imagePullPolicy: Always
-        resources:
-          requests:
-            memory: "256Mi"
-          limits:
-            memory: "256Mi"
-        env:
-        - name: JOB
-          value: "true"
-        envFrom:
-        - secretRef:
-            name: {{ .Release.Name }}-secret
-      restartPolicy: OnFailure
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -59,7 +35,7 @@ spec:
     spec:
       containers:
       - name: {{ .Release.Name }}
-        image: ghcr.io/{{ .Values.USERNAME }}/fastify-boilerplate:main
+        image: ghcr.io/{{ .Values.USERNAME }}/lnkbrd:main
         imagePullPolicy: Always
         ports:
         - containerPort: 8080

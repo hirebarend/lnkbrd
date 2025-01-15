@@ -1,1 +1,2 @@
-export * from './person';
+export * from './link';
+export * from './pixel-event';

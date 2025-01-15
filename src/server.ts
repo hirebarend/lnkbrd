@@ -2,9 +2,10 @@ import fastify from 'fastify';
 import fastifyCors from '@fastify/cors';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
+import fastifyView from '@fastify/view';
 import * as qs from 'qs';
 import { Logger } from './hooks';
-import { PEOPLE_POST } from './routes';
+import { CODE_GET, LINKS_POST, OPEN_GRAPH_GET } from './routes';
 
 export async function startServer() {
   const server = fastify({
@@ -33,19 +34,22 @@ export async function startServer() {
     },
   );
 
-  if (
-    process.env.MONGODB_CONNECTION_STRING &&
-    process.env.MONGODB_DATABASE_NAME
-  ) {
+  if (process.env.MONGODB_CONNECTION_STRING) {
     server.addHook(
       'onResponse',
       await Logger(
-        process.env.MONGODB_CONNECTION_STRING as string,
-        process.env.MONGODB_DATABASE_NAME as string,
+        process.env.MONGODB_CONNECTION_STRING,
+        process.env.MONGODB_DATABASE_NAME || 'lnkbrd',
         'logs',
       ),
     );
   }
+
+  await server.register(fastifyView, {
+    engine: {
+      handlebars: require('handlebars'),
+    },
+  });
 
   await server.register(fastifySwagger, {
     swagger: {
@@ -66,7 +70,7 @@ export async function startServer() {
         },
       },
       externalDocs: {
-        url: 'https://github.com/hirebarend/fastify-boilerplate',
+        url: 'https://github.com/hirebarend/lnkbrd',
         description: 'View Offical Documentation',
       },
     },
@@ -76,7 +80,11 @@ export async function startServer() {
     routePrefix: '/docs',
   });
 
-  server.route(PEOPLE_POST);
+  server.route(CODE_GET);
+
+  server.route(LINKS_POST);
+
+  server.route(OPEN_GRAPH_GET);
 
   server.route({
     handler: async (request, reply) => {
