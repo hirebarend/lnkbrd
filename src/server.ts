@@ -5,7 +5,14 @@ import fastifySwaggerUi from '@fastify/swagger-ui';
 import fastifyView from '@fastify/view';
 import * as qs from 'qs';
 import { Logger } from './hooks';
-import { CODE_GET, LINKS_POST, OPEN_GRAPH_GET } from './routes';
+import {
+  CODE_GET,
+  LINKS_CODE_GET,
+  LINKS_GET,
+  LINKS_POST,
+  LINKS_PUT,
+  OPEN_GRAPH_GET,
+} from './routes';
 
 export async function startServer() {
   const server = fastify({
@@ -82,7 +89,13 @@ export async function startServer() {
 
   server.route(CODE_GET);
 
+  server.route(LINKS_GET);
+
   server.route(LINKS_POST);
+
+  server.route(LINKS_PUT);
+
+  server.route(LINKS_CODE_GET);
 
   server.route(OPEN_GRAPH_GET);
 

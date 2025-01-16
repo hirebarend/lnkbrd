@@ -1,56 +1,19 @@
-# Fastify Boilerplate
+# Link Bird
 
-``` code
-Hey There! 🙌 
-🤾 that ⭐️ button if you like this boilerplate. 
-```
+## Get Started
 
-The Fastify boilerplate with all you need to build your SaaS, AI tool, or any other web app and make your first $ online fast.
-
-## 🚀 Getting Started
+### Prerequisites
 
 ```bash
-git clone https://github.com/<USERNAME>/fastify-boilerplate.git
-
-cd fastify-boilerplate
-
-npm install
-
-npm run dev
-
-# go to http://localhost:8080
+curl -sSL https://raw.githubusercontent.com/hirebarend/digital-ocean-deployment-kit/refs/heads/main/src/pre-install.sh | bash
 ```
 
-## 🛠️ Project Structure
-
-* `.github`
-    * `workflows`
-        * `main.yaml`
-* `helm-charts`: Helm Chart
-* `src`
-    * `core`: contains the models, IOC container and application logic
-    * `hooks`: contains the custom hooks for Fastify such as the logger hook
-    * `routes`: contains the routes for Fastify
-    * `job.ts`: contains the `job()` function which will be executed once and only restarted upon failure, it's intended purpose is the run backgrounds tasks and/or listen to queues
-    * `main.ts`: primary entry point
-    * `server.ts`: contains the `startServer()` function which configures and starts the Fastify server
-* `Dockerfile`
-
-## Supported Cloud Providers
-
-* [Digital Ocean](https://www.digitalocean.com/products/kubernetes)
-
-## Deploy to Kubernetes
+### Install
 
 ```bash
-# Replace values in ./helm-charts/values.yaml
+curl -sSL https://raw.githubusercontent.com/hirebarend/digital-ocean-deployment-kit/refs/heads/main/src/install.sh | bash -s -- lnkbrd.com https://github.com/hirebarend/lnkbrd.git
 
-helm install my-fastify-boilerplate ./helm-charts
+curl -sSL https://raw.githubusercontent.com/hirebarend/digital-ocean-deployment-kit/refs/heads/main/src/certbot.sh | bash -s -- lnkbrd.com hirebarend@gmail.com
+
+pm2 restart "lnkbrd-com" --update-env
 ```
-
-## 🤝 Contributing
-
-We love our contributors! Here's how you can contribute:
-
-- [Open an issue](https://github.com/hirebarend/fastify-boilerplate/issues) if you believe you've encountered a bug.
-- Make a [pull request](https://github.com/hirebarend/fastify-boilerplate/pull) to add new features/make quality-of-life improvements/fix bugs.
