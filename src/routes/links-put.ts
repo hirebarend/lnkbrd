@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest, RouteOptions } from 'fastify';
 import { Collection } from 'mongodb';
-import { Link, getContainer } from '../core';
+import { Link, getConsumerFromHeader, getContainer } from '../core';
 
 export const LINKS_PUT: RouteOptions<any, any, any, any> = {
   handler: async (
@@ -29,7 +29,9 @@ export const LINKS_PUT: RouteOptions<any, any, any, any> = {
 
     const collection: Collection<Link> = container.db.collection<Link>('links');
 
-    const consumer: string | null = '';
+    const consumer: string | null = getConsumerFromHeader(
+      request.headers.authorization,
+    );
 
     if (!consumer) {
       reply.status(401).send();

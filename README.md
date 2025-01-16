@@ -6,6 +6,8 @@
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/hirebarend/digital-ocean-deployment-kit/refs/heads/main/src/pre-install.sh | bash
+
+curl -sSL https://raw.githubusercontent.com/hirebarend/digital-ocean-deployment-kit/refs/heads/main/src/scripts/install-certbot.sh | bash
 ```
 
 ### Install
@@ -14,6 +16,10 @@ curl -sSL https://raw.githubusercontent.com/hirebarend/digital-ocean-deployment-
 curl -sSL https://raw.githubusercontent.com/hirebarend/digital-ocean-deployment-kit/refs/heads/main/src/install.sh | bash -s -- lnkbrd.com https://github.com/hirebarend/lnkbrd.git
 
 curl -sSL https://raw.githubusercontent.com/hirebarend/digital-ocean-deployment-kit/refs/heads/main/src/certbot.sh | bash -s -- lnkbrd.com hirebarend@gmail.com
+
+nano /usr/src/app/lnkbrd-com/.env
+
+export NVM_DIR="$HOME/.nvm"; [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
 pm2 restart "lnkbrd-com" --update-env
 ```

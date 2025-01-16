@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { FastifyReply, FastifyRequest, RouteOptions } from 'fastify';
 import { Collection } from 'mongodb';
-import { Link, getContainer } from '../core';
+import { Link, getConsumerFromHeader, getContainer } from '../core';
 import { openGraph } from './open-graph-get';
 
 export const LINKS_POST: RouteOptions<any, any, any, any> = {
@@ -24,7 +24,9 @@ export const LINKS_POST: RouteOptions<any, any, any, any> = {
 
     const collection: Collection<Link> = container.db.collection<Link>('links');
 
-    const consumer: string | null = '';
+    const consumer: string | null = getConsumerFromHeader(
+      request.headers.authorization,
+    );
 
     if (!consumer) {
       reply.status(401).send();
