@@ -118,7 +118,7 @@ export const OPEN_GRAPH_GET: RouteOptions<any, any, any, any> = {
   method: 'GET',
   url: '/api/v1/open-graph',
   schema: {
-    tags: ['open-graph'],
+    tags: ['X-HIDDEN'],
     querystring: {
       type: 'object',
       properties: {
