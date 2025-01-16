@@ -66,7 +66,7 @@ export async function startServer() {
       info: {
         description: '',
         title: 'API Specification',
-        version: '0.1.0',
+        version: '1.0.0',
       },
       produces: ['application/json'],
       schemes: process.env.HOST ? ['https', 'http'] : ['http'],
