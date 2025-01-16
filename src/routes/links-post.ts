@@ -8,7 +8,6 @@ export const LINKS_POST: RouteOptions<any, any, any, any> = {
   handler: async (
     request: FastifyRequest<{
       Body: {
-        code: string | null;
         expires: number | null;
         externalId: string | null;
         geoTargeting: Array<{ country: string; url: string }> | null;
@@ -34,12 +33,10 @@ export const LINKS_POST: RouteOptions<any, any, any, any> = {
       return;
     }
 
-    const code: string =
-      request.body.code ||
-      faker.string.alphanumeric({
-        casing: 'lower',
-        length: 6,
-      });
+    const code: string = faker.string.alphanumeric({
+      casing: 'lower',
+      length: 6,
+    });
 
     if (await collection.findOne({ code })) {
       reply.status(409).send();
@@ -107,6 +104,7 @@ export const LINKS_POST: RouteOptions<any, any, any, any> = {
           },
           nullable: true,
         },
+        url: { type: 'string' },
         webhook: { type: 'string', nullable: true },
       },
     },
