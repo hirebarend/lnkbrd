@@ -8,6 +8,7 @@ import { Logger } from './hooks';
 import {
   CODE_GET,
   LINKS_CODE_GET,
+  LINKS_CREATE_GET,
   LINKS_GET,
   LINKS_POST,
   LINKS_PUT,
@@ -96,6 +97,8 @@ export async function startServer() {
   server.route(LINKS_PUT);
 
   server.route(LINKS_CODE_GET);
+
+  server.route(LINKS_CREATE_GET);
 
   server.route(OPEN_GRAPH_GET);
 
