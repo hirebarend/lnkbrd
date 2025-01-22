@@ -3,7 +3,9 @@ module.exports = {
     {
       name: "lnkbrd",
       script: "node",
-      args: "dist/main.js"
+      args: "dist/main.js",
+      instances: 1,
+      watch: true,
     },
   ],
 };
