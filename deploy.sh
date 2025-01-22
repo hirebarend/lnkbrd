@@ -48,7 +48,7 @@ fi
 if [ ! -f "/usr/src/app/$SLUGIFIED_HOSTNAME/.env" ]; then
     if [ -f "/usr/src/app/.env" ]; then
         cp /usr/src/app/.env /usr/src/app/$SLUGIFIED_HOSTNAME/.env
-    if
+    fi
 
     echo "HOST=\"$HOSTNAME\"" >> .env
     echo "PORT=\"$PORT\"" >> .env
