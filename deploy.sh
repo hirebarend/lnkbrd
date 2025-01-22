@@ -40,15 +40,13 @@ if [ ! -d "/usr/src/app/$SLUGIFIED_HOSTNAME" ]; then
 else
     GIT_PULL_OUTPUT=$(git -C /usr/src/app/$SLUGIFIED_HOSTNAME pull)
 
-    # if echo "$GIT_PULL_OUTPUT" | grep -q "Already up to date."; then
-    #     exit 0
-    # fi
+    if echo "$GIT_PULL_OUTPUT" | grep -q "Already up to date."; then
+        exit 0
+    fi
 fi
 
 if [ ! -f "/usr/src/app/$SLUGIFIED_HOSTNAME/.env" ]; then
-    if [ -f "/usr/src/app/.env" ]; then
-        cp /usr/src/app/.env /usr/src/app/$SLUGIFIED_HOSTNAME/.env
-    fi
+    cp /usr/src/app/.env /usr/src/app/$SLUGIFIED_HOSTNAME/.env
 
     echo "HOST=\"$HOSTNAME\"" >> .env
     echo "PORT=\"$PORT\"" >> .env
