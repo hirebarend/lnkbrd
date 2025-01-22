@@ -26,11 +26,11 @@ Link Bird is an open-source API-first URL shortener
 
 ## Features
 
-- **Analytics**
-- **Geo-Targeting**
-- **Custom Open Graph**
-- **Webhook**
-- **Expiry**
+- **Analytics**: Track every click with real-time analytics, offering detailed insights to understand your audience and optimize performance.
+- **Geo-Targeting**: Redirect users to location-specific destinations, creating tailored experiences for a global audience.
+- **Custom Open Graph**: Customize how your links appear on social media with personalized titles, descriptions, and thumbnails.
+- **Time-Limited Links**: Set expiration dates for your links to ensure they remain active only as long as you need them.
+- **Notifications**: Receive instant notifications for link events, enabling seamless automation with your favorite tools.
 
 ## Get Started
 
@@ -42,6 +42,14 @@ cd lnkbrd
 npm install
 
 npm run dev
+```
+
+## Deployment
+
+```bash
+curl -sSL https://raw.githubusercontent.com/hirebarend/lnkbrd/refs/heads/main/deploy.sh | bash -s -- lnkbrd.com https://github.com/hirebarend/lnkbrd.git
+
+pm2 start /usr/src/app/lnkbrd-com/ecosystem.config.js
 ```
 
 ## Contributing
