@@ -40,9 +40,9 @@ if [ ! -d "/usr/src/app/$SLUGIFIED_HOSTNAME" ]; then
 else
     GIT_PULL_OUTPUT=$(git -C /usr/src/app/$SLUGIFIED_HOSTNAME pull)
 
-    # if echo "$GIT_PULL_OUTPUT" | grep -q "Already up to date."; then
-    #     exit 0
-    # fi
+    if echo "$GIT_PULL_OUTPUT" | grep -q "Already up to date."; then
+        exit 0
+    fi
 fi
 
 if [ ! -f "/usr/src/app/$SLUGIFIED_HOSTNAME/.env" ]; then
@@ -50,8 +50,8 @@ if [ ! -f "/usr/src/app/$SLUGIFIED_HOSTNAME/.env" ]; then
         cp /usr/src/app/.env /usr/src/app/$SLUGIFIED_HOSTNAME/.env
     fi
 
-    echo "HOST=\"$HOSTNAME\"" >> .env
-    echo "PORT=\"$PORT\"" >> .env
+    echo "HOST=\"$HOSTNAME\"" >> /usr/src/app/$SLUGIFIED_HOSTNAME/.env
+    echo "PORT=\"$PORT\"" >> /usr/src/app/$SLUGIFIED_HOSTNAME/.env
 fi
 
 if [ ! -f "/etc/nginx/conf.d/$SLUGIFIED_HOSTNAME.conf" ]; then
@@ -61,11 +61,24 @@ server {
     server_name $HOSTNAME;
 
     location / {
-        proxy_pass http://127.0.0.1:$2;
+        proxy_pass http://127.0.0.1:$PORT;
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto \$scheme;
+
+        add_header Access-Control-Allow-Origin *;
+        add_header Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE";
+        add_header Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization";
+
+        if (\$request_method = OPTIONS) {
+            add_header Access-Control-Allow-Origin *;
+            add_header Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE";
+            add_header Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization";
+            add_header Content-Length 0;
+            add_header Content-Type text/plain;
+            return 204;
+        }
     }
 }
 EOF
