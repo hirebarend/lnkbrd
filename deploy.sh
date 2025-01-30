@@ -40,6 +40,8 @@ mkdir -p /usr/src/app
 if [ ! -d "/usr/src/app/$SLUGIFIED_HOSTNAME" ]; then
     git clone $2 /usr/src/app/$SLUGIFIED_HOSTNAME
 else
+    git reset --hard
+    
     GIT_PULL_OUTPUT=$(git -C /usr/src/app/$SLUGIFIED_HOSTNAME pull)
 
     if echo "$GIT_PULL_OUTPUT" | grep -q "Already up to date."; then

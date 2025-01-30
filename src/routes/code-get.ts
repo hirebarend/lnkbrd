@@ -1,4 +1,5 @@
 import { FastifyReply, FastifyRequest, RouteOptions } from 'fastify';
+import axios from 'axios';
 import ip3country from 'ip3country';
 import { isbot } from 'isbot';
 import { Collection } from 'mongodb';
@@ -51,7 +52,18 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
 
     const url: string = geoTargeting ? geoTargeting.url : link.url;
 
-    if (isbot(userAgent) && !userAgent?.startsWith('curl/')) {
+    if (userAgent && userAgent.startsWith('curl/')) {
+      const response = await axios.get(url, {
+        validateStatus: () => true,
+      });
+
+      return reply
+        .status(response.status)
+        .header('Content-Type', response.headers['Content-Type'])
+        .send(response.data);
+    }
+
+    if (isbot(userAgent)) {
       return reply.view(path.join('public', 'index-static-bot.html'), link);
     }
 
