@@ -49,6 +49,10 @@ npm run dev
 ```bash
 curl -sSL https://raw.githubusercontent.com/hirebarend/lnkbrd/refs/heads/main/deploy.sh | bash -s -- lnkbrd.com https://github.com/hirebarend/lnkbrd.git
 
+certbot --agree-tos -d "lnkbrd.com" --email "foo.bar@example.com" --nginx --non-interactive
+
+systemctl reload nginx
+
 pm2 start /usr/src/app/lnkbrd-com/ecosystem.config.js
 ```
 
