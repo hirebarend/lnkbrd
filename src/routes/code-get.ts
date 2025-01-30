@@ -51,7 +51,7 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
 
     const url: string = geoTargeting ? geoTargeting.url : link.url;
 
-    if (isbot(userAgent)) {
+    if (isbot(userAgent) && !userAgent?.startsWith('curl/')) {
       return reply.view(path.join('public', 'index-static-bot.html'), link);
     }
 
