@@ -23,9 +23,14 @@ export function getConsumerFromHeader(
 
   const token: string = headerSplitted[1];
 
-  const result: jsonwebtoken.JwtPayload = jsonwebtoken.decode(
-    token,
-  ) as jsonwebtoken.JwtPayload;
+  try {
+    const result: jsonwebtoken.JwtPayload = jsonwebtoken.verify(
+      token,
+      process.env.SECRET || '',
+    ) as jsonwebtoken.JwtPayload;
 
-  return result.email;
+    return result.sub || '';
+  } catch {
+    return null;
+  }
 }

@@ -6,6 +6,7 @@ import fastifyView from '@fastify/view';
 import * as qs from 'qs';
 import { Logger } from './hooks';
 import {
+  AUTH_POST,
   CODE_GET,
   LINKS_CODE_GET,
   LINKS_CREATE_GET,
@@ -87,6 +88,8 @@ export async function startServer() {
   await server.register(fastifySwaggerUi, {
     routePrefix: '/docs',
   });
+
+  server.route(AUTH_POST);
 
   server.route(CODE_GET);
 
