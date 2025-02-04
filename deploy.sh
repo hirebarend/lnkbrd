@@ -1,5 +1,15 @@
 #!/bin/sh -e
 
+get_available_port() {
+    local PORT=${1:-8080}
+
+    while grep -r -q "proxy_pass http://127.0.0.1:$PORT" /etc/nginx/conf.d/* 2>/dev/null; do
+        PORT=$((PORT + 1))
+    done
+
+    echo "$PORT"
+}
+
 if [ "$(id -u)" != 0 ];then
     exit 1
 fi
@@ -7,11 +17,11 @@ fi
 HOSTNAME=$1
 SLUGIFIED_HOSTNAME=$(echo "$HOSTNAME" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g' | sed -E 's/^-+|-+$//g')
 
-PORT=8080
+PORT=$(get_available_port 8080)
 
-while lsof -iTCP:$PORT -sTCP:LISTEN >/dev/null 2>&1; do
-    PORT=$((PORT + 1))
-done
+if [ -f "/etc/nginx/conf.d/$SLUGIFIED_HOSTNAME.conf" ]; then
+    PORT=$(grep -oP 'proxy_pass http://127.0.0.1:\K[0-9]+' "/etc/nginx/conf.d/$SLUGIFIED_HOSTNAME.conf")
+fi
 
 # <NGINX>
 if ! dpkg -l | grep -q nginx; then
@@ -40,7 +50,7 @@ mkdir -p /usr/src/app
 if [ ! -d "/usr/src/app/$SLUGIFIED_HOSTNAME" ]; then
     git clone $2 /usr/src/app/$SLUGIFIED_HOSTNAME
 else
-    git reset --hard
+    (cd /usr/src/app/$SLUGIFIED_HOSTNAME &&  git reset --hard)
     
     GIT_PULL_OUTPUT=$(git -C /usr/src/app/$SLUGIFIED_HOSTNAME pull)
 
@@ -49,14 +59,15 @@ else
     fi
 fi
 
-if [ ! -f "/usr/src/app/$SLUGIFIED_HOSTNAME/.env" ]; then
-    if [ -f "/usr/src/app/.env" ]; then
-        cp /usr/src/app/.env /usr/src/app/$SLUGIFIED_HOSTNAME/.env
-    fi
+rm -f /usr/src/app/$SLUGIFIED_HOSTNAME/.env
 
-    echo "HOST=\"$HOSTNAME\"" >> /usr/src/app/$SLUGIFIED_HOSTNAME/.env
-    echo "PORT=\"$PORT\"" >> /usr/src/app/$SLUGIFIED_HOSTNAME/.env
+if [ -f "/usr/src/app/.env" ]; then
+    cp /usr/src/app/.env /usr/src/app/$SLUGIFIED_HOSTNAME/.env
 fi
+
+echo "HOST=\"$HOSTNAME\"" >> /usr/src/app/$SLUGIFIED_HOSTNAME/.env
+echo "PORT=\"$PORT\"" >> /usr/src/app/$SLUGIFIED_HOSTNAME/.env
+
 
 if [ ! -f "/etc/nginx/conf.d/$SLUGIFIED_HOSTNAME.conf" ]; then
     cat <<EOF > /etc/nginx/conf.d/$SLUGIFIED_HOSTNAME.conf
