@@ -45,6 +45,24 @@ if ! command -v pm2 &> /dev/null; then
 fi
 # </NODE_JS>
 
+# <CERTBOT>
+if ! command -v certbot &> /dev/null; then
+    apt-get update
+
+    apt install -y python3 python3-venv libaugeas0
+
+    python3 -m venv /opt/certbot/
+
+    /opt/certbot/bin/pip install certbot certbot-nginx
+
+    ln -s /opt/certbot/bin/certbot /usr/bin/certbot
+
+    cat <<EOL > /etc/cron.d/certbot-renew
+0 3 * * * root certbot renew --quiet && systemctl reload nginx
+EOL
+fi
+# </CERTBOT>
+
 mkdir -p /usr/src/app
 
 if [ ! -d "/usr/src/app/$SLUGIFIED_HOSTNAME" ]; then
@@ -101,6 +119,8 @@ EOF
     nginx -t
 
     systemctl reload nginx
+
+    certbot --agree-tos -d $HOSTNAME --email $3 --nginx --non-interactive
 fi
 
 if [ -f "/usr/src/app/$SLUGIFIED_HOSTNAME/script.sh" ]; then

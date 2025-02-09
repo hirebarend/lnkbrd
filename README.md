@@ -47,11 +47,7 @@ npm run dev
 ## Deployment
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/hirebarend/lnkbrd/refs/heads/main/deploy.sh | bash -s -- lnkbrd.com https://github.com/hirebarend/lnkbrd.git
-
-certbot --agree-tos -d "lnkbrd.com" --email "foo.bar@example.com" --nginx --non-interactive
-
-systemctl reload nginx
+curl -sSL https://raw.githubusercontent.com/hirebarend/lnkbrd/refs/heads/main/deploy.sh | bash -s -- lnkbrd.com https://github.com/hirebarend/lnkbrd.git foo.bar@example.com
 
 pm2 start /usr/src/app/lnkbrd-com/ecosystem.config.js
 ```
@@ -66,7 +62,7 @@ We love our contributors! Here's how you can contribute:
 <br />
 
 <a href="https://github.com/hirebarend/lnkbrd/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=hirebarend/lnkbrd&v=1" />
+  <img src="https://contrib.rocks/image?repo=hirebarend/lnkbrd" />
 </a>
 
 ## Repo Activity
