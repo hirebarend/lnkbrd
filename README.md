@@ -44,14 +44,6 @@ npm install
 npm run dev
 ```
 
-## Deployment
-
-```bash
-curl -sSL https://raw.githubusercontent.com/hirebarend/lnkbrd/refs/heads/main/deploy.sh | bash -s -- lnkbrd.com https://github.com/hirebarend/lnkbrd.git foo.bar@example.com
-
-pm2 start /usr/src/app/lnkbrd-com/ecosystem.config.js
-```
-
 ## Contributing
 
 We love our contributors! Here's how you can contribute:

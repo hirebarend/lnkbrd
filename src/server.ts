@@ -1,8 +1,10 @@
-import fastify from 'fastify';
+import fastify, { FastifyRequest } from 'fastify';
 import fastifyCors from '@fastify/cors';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import fastifyView from '@fastify/view';
+import ip3country from 'ip3country';
+import { isbot } from 'isbot';
 import * as qs from 'qs';
 import { Logger } from './hooks';
 import {
@@ -117,9 +119,30 @@ export async function startServer() {
   });
 
   server.route({
-    handler: async (request, reply) => {
+    handler: async (
+      request: FastifyRequest<{
+        Headers: {
+          'x-real-ip': string | null;
+        };
+        Params: { code: string };
+      }>,
+      reply,
+    ) => {
       try {
-        reply.status(200).send();
+        const ipAddress: string | null = request.headers['x-real-ip'] || null;
+
+        const country: string | null = ipAddress
+          ? ip3country.lookupStr(ipAddress)
+          : null;
+
+        const userAgent: string | null = request.headers['user-agent'] || null;
+
+        reply.status(200).send({
+          country,
+          ipAddress,
+          isBot: isbot(userAgent),
+          userAgent,
+        });
       } catch {
         reply.status(503).send();
       }

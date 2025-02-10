@@ -42,10 +42,16 @@ export const AUTH_POST: RouteOptions<any, any, any, any> = {
       });
     }
 
+    if (!consumer) {
+      reply.status(400).send();
+
+      return;
+    }
+
     reply.status(200).send({
       token: jsonwebtoken.sign({}, process.env.SECRET || '', {
         expiresIn: '1h',
-        subject: consumer?.username,
+        subject: consumer.username,
       }),
     });
   },
