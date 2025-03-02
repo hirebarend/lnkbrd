@@ -44,6 +44,16 @@ npm install
 npm run dev
 ```
 
+### Docker
+
+```bash
+curl -o prod.env.encrypted https://raw.githubusercontent.com/hirebarend/lnkbrd/refs/heads/main/prod.env.encrypted
+
+gpg -o prod.env -d prod.env.encrypted
+
+curl -sL https://raw.githubusercontent.com/hirebarend/lnkbrd/refs/heads/main/docker-compose.yaml | docker compose -f - up
+```
+
 ## Contributing
 
 We love our contributors! Here's how you can contribute:

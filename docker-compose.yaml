@@ -46,10 +46,16 @@ services:
     environment:
       - LETSENCRYPT_HOST=lnkbrd.com
       - HOST=lnkbrd.com
+      - MONGODB_DATABASE_NAME=lnkbrd
       - VIRTUAL_HOST=lnkbrd.com
       - VIRTUAL_PORT=8080
     networks:
       - proxy_network
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   proxy_network:
