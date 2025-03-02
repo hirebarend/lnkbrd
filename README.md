@@ -51,7 +51,7 @@ curl -o prod.env.encrypted https://raw.githubusercontent.com/hirebarend/lnkbrd/r
 
 gpg -o prod.env -d prod.env.encrypted
 
-curl -sL https://raw.githubusercontent.com/hirebarend/lnkbrd/refs/heads/main/docker-compose.yaml | docker compose -f - up
+curl -sL https://raw.githubusercontent.com/hirebarend/lnkbrd/refs/heads/main/docker-compose.yaml | docker compose -f - up -d
 ```
 
 ## Contributing
