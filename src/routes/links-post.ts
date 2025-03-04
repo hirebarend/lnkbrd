@@ -11,9 +11,14 @@ export const LINKS_POST: RouteOptions<any, any, any, any> = {
         expires: number | null;
         externalId: string | null;
         geoTargeting: Array<{ country: string; url: string }> | null;
-        url: string;
         name: string | null;
+        openGraph: {
+          description: string | null;
+          image: string | null;
+          title: string | null;
+        } | null;
         tags: Array<string> | null;
+        url: string;
         webhook: string | null;
       };
     }>,
@@ -56,7 +61,12 @@ export const LINKS_POST: RouteOptions<any, any, any, any> = {
       externalId: request.body.externalId,
       geoTargeting: request.body.geoTargeting || [],
       name: request.body.name,
-      openGraph: await openGraph(request.body.url),
+      openGraph: request.body.openGraph
+        ? {
+            ...(await openGraph(request.body.url)),
+            ...request.body.openGraph,
+          }
+        : await openGraph(request.body.url),
       status: 'active',
       tags: request.body.tags || [],
       url: request.body.url,
@@ -97,6 +107,14 @@ export const LINKS_POST: RouteOptions<any, any, any, any> = {
           nullable: true,
         },
         name: { type: 'string', nullable: true },
+        openGraph: {
+          type: 'object',
+          properties: {
+            description: { type: 'string', nullable: true },
+            image: { type: 'string', nullable: true },
+            title: { type: 'string', nullable: true },
+          },
+        },
         tags: {
           type: 'array',
           items: {
