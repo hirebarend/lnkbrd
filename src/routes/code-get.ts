@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest, RouteOptions } from 'fastify';
 import axios from 'axios';
+import { faker } from '@faker-js/faker';
 import ip3country from 'ip3country';
 import { isbot } from 'isbot';
 import { Collection } from 'mongodb';
@@ -19,6 +20,16 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
   ) => {
     const timestamp: number = new Date().getTime();
 
+    const ipAddress: string | null = request.headers['x-real-ip'] || null;
+
+    const country: string | null = ipAddress
+      ? ip3country.lookupStr(ipAddress)
+      : null;
+
+    const userAgent: string | null = request.headers['user-agent'] || null;
+
+    const bot: boolean = isbot(userAgent);
+
     const container = await getContainer();
 
     const collection: Collection<Link> = container.db.collection<Link>('links');
@@ -35,18 +46,27 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
     );
 
     if (!link) {
+      container.posthog.capture({
+        distinctId: faker.string.uuid(),
+        event: 'code-get',
+        groups: {
+          code: request.params.code,
+        },
+        properties: {
+          bot,
+          code: request.params.code,
+          country,
+          ip_address: ipAddress,
+          status: 404,
+          url: null,
+          user_agent: userAgent,
+        },
+      });
+
       reply.status(404).send();
 
       return;
     }
-
-    const ipAddress: string | null = request.headers['x-real-ip'] || null;
-
-    const country: string | null = ipAddress
-      ? ip3country.lookupStr(ipAddress)
-      : null;
-
-    const userAgent: string | null = request.headers['user-agent'] || null;
 
     const geoTargeting = link.geoTargeting.find((x) => x.country === country);
 
@@ -63,7 +83,24 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
         .send(response.data);
     }
 
-    if (isbot(userAgent)) {
+    if (bot) {
+      container.posthog.capture({
+        distinctId: faker.string.uuid(),
+        event: 'code-get',
+        groups: {
+          code: request.params.code,
+        },
+        properties: {
+          bot,
+          code: request.params.code,
+          country,
+          ip_address: ipAddress,
+          status: 200,
+          url: null,
+          user_agent: userAgent,
+        },
+      });
+
       return reply.view(path.join('public', 'index-static-bot.html'), link);
     }
 
@@ -71,6 +108,23 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
       link.status !== 'active' ||
       (link.expires && link.expires < new Date().getTime())
     ) {
+      container.posthog.capture({
+        distinctId: faker.string.uuid(),
+        event: 'code-get',
+        groups: {
+          code: request.params.code,
+        },
+        properties: {
+          bot,
+          code: request.params.code,
+          country,
+          ip_address: ipAddress,
+          status: 404,
+          url: null,
+          user_agent: userAgent,
+        },
+      });
+
       reply.status(404).send();
 
       return;
@@ -116,6 +170,23 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
       //   pixelEvent,
       // });
     }
+
+    container.posthog.capture({
+      distinctId: faker.string.uuid(),
+      event: 'code-get',
+      groups: {
+        code: request.params.code,
+      },
+      properties: {
+        bot,
+        code: request.params.code,
+        country,
+        ip_address: ipAddress,
+        status: 302,
+        url,
+        user_agent: userAgent,
+      },
+    });
 
     reply.redirect(url, 302);
   },
