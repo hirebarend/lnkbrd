@@ -18,6 +18,8 @@ import {
   OPEN_GRAPH_GET,
 } from './routes';
 
+ip3country.init();
+
 export async function startServer() {
   const server = fastify({
     bodyLimit: 10 * 1048576, // 10MB

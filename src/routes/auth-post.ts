@@ -50,7 +50,7 @@ export const AUTH_POST: RouteOptions<any, any, any, any> = {
 
     reply.status(200).send({
       token: jsonwebtoken.sign({}, process.env.SECRET || '', {
-        expiresIn: '1h',
+        expiresIn: '365d',
         subject: consumer.username,
       }),
     });
