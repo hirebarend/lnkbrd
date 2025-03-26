@@ -111,6 +111,18 @@ export async function startServer() {
 
   server.route({
     handler: async (request, reply) => {
+      const mappings: Record<string, string | undefined> = {
+        'getverified.co.za': 'https://calendly.com/getverified/30min',
+      };
+
+      const mapping = mappings[request.host];
+
+      if (mapping) {
+        reply.redirect(mapping, 302);
+
+        return;
+      }
+
       reply.redirect('/docs', 302);
     },
     method: 'GET',

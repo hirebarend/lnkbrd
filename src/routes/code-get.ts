@@ -18,6 +18,12 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
     }>,
     reply: FastifyReply,
   ) => {
+    if (request.params.code === '7hblle') {
+      reply.status(404).send();
+
+      return;
+    }
+
     const timestamp: number = new Date().getTime();
 
     const ipAddress: string | null = request.headers['x-real-ip'] || null;
