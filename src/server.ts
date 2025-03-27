@@ -113,6 +113,7 @@ export async function startServer() {
     handler: async (request, reply) => {
       const mappings: Record<string, string | undefined> = {
         'getverified.co.za': 'https://calendly.com/getverified/30min',
+        'proprvetting.com': 'https://calendly.com/getverified/30min',
       };
 
       const mapping = mappings[request.host];
