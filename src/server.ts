@@ -10,6 +10,7 @@ import { Logger } from './hooks';
 import {
   AUTH_POST,
   CODE_GET,
+  CODE_QRCODE_GET,
   LINKS_CODE_GET,
   LINKS_CREATE_GET,
   LINKS_GET,
@@ -96,6 +97,8 @@ export async function startServer() {
   server.route(AUTH_POST);
 
   server.route(CODE_GET);
+
+  server.route(CODE_QRCODE_GET);
 
   server.route(LINKS_GET);
 
