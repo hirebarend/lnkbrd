@@ -29,7 +29,7 @@
     "@fastify/view": "^10.0.2",
     "axios": "^1.8.4",
     "cheerio": "^1.0.0",
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.5.0",
     "fastify": "^5.3.2",
     "handlebars": "^4.7.8",
     "ip3country": "^5.0.0",
