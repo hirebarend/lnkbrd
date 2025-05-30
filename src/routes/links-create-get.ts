@@ -2,12 +2,14 @@ import { faker } from '@faker-js/faker';
 import { FastifyReply, FastifyRequest, RouteOptions } from 'fastify';
 import { Collection } from 'mongodb';
 import { Link, getContainer } from '../core';
-import { openGraph } from './open-graph-get';
 
 export const LINKS_CREATE_GET: RouteOptions<any, any, any, any> = {
   handler: async (
     request: FastifyRequest<{
       Querystring: {
+        description: string | undefined;
+        image: string | undefined;
+        title: string | undefined;
         url: string;
       };
     }>,
@@ -54,7 +56,11 @@ export const LINKS_CREATE_GET: RouteOptions<any, any, any, any> = {
       externalId: null,
       geoTargeting: [],
       name: null,
-      openGraph: await openGraph(request.query.url),
+      openGraph: {
+        description: request.query.description || '',
+        image: request.query.image || '',
+        title: request.query.title || '',
+      },
       status: 'active',
       tags: [],
       url: request.query.url,
@@ -82,6 +88,9 @@ export const LINKS_CREATE_GET: RouteOptions<any, any, any, any> = {
     querystring: {
       type: 'object',
       properties: {
+        description: { type: 'string', nullable: true },
+        image: { type: 'string', nullable: true },
+        title: { type: 'string', nullable: true },
         url: { type: 'string' },
       },
     },
