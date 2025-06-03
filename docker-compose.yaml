@@ -52,6 +52,21 @@ services:
     networks:
       - proxy_network
 
+  lnkbrd-erasmus-sh:
+    image: ghcr.io/hirebarend/lnkbrd:main
+    container_name: lnkbrd-erasmus-sh
+    restart: unless-stopped
+    env_file:
+      - prod.env
+    environment:
+      - LETSENCRYPT_HOST=erasmus.sh
+      - HOST=erasmus.sh
+      - MONGODB_DATABASE_NAME=erasmus.sh
+      - VIRTUAL_HOST=erasmus.sh
+      - VIRTUAL_PORT=8080
+    networks:
+      - proxy_network
+
   watchtower:
     image: containrrr/watchtower
     volumes:

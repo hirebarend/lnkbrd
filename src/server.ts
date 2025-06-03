@@ -115,6 +115,7 @@ export async function startServer() {
   server.route({
     handler: async (request, reply) => {
       const mappings: Record<string, string | undefined> = {
+        'erasmus.sh': 'https://www.linkedin.com/in/hirebarend',
         'getverified.co.za': 'https://calendly.com/getverified/30min',
         'proprvetting.com': 'https://calendly.com/getverified/30min',
       };
