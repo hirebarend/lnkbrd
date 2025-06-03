@@ -61,7 +61,7 @@ services:
     environment:
       - LETSENCRYPT_HOST=erasmus.sh
       - HOST=erasmus.sh
-      - MONGODB_DATABASE_NAME=erasmus.sh
+      - MONGODB_DATABASE_NAME=lnkbrd
       - VIRTUAL_HOST=erasmus.sh
       - VIRTUAL_PORT=8080
     networks:
