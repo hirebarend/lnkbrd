@@ -46,7 +46,7 @@ npm run dev
 # Open your browser and go to, http://localhost:8080/
 ```
 
-### Docker
+### Deployment
 
 ```bash
 curl -L -O https://raw.githubusercontent.com/hirebarend/lnkbrd/refs/heads/main/docker-compose.yaml
