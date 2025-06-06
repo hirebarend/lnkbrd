@@ -41,29 +41,15 @@ services:
     image: ghcr.io/hirebarend/lnkbrd:main
     container_name: lnkbrd
     restart: unless-stopped
-    env_file:
-      - prod.env
     environment:
-      - LETSENCRYPT_HOST=lnkbrd.com
-      - HOST=lnkbrd.com
+      - LETSENCRYPT_HOST=<PLACEHOLDER>          # yourdomain.com
+      - HOST=<PLACEHOLDER>                      # yourdomain.com
+      - MONGODB_CONNECTION_STRING=<PLACEHOLDER>
       - MONGODB_DATABASE_NAME=lnkbrd
-      - VIRTUAL_HOST=lnkbrd.com
+      - POSTHOG_API_KEY=<PLACEHOLDER>
+      - VIRTUAL_HOST=<PLACEHOLDER>              # yourdomain.com
       - VIRTUAL_PORT=8080
-    networks:
-      - proxy_network
-
-  lnkbrd-erasmus-sh:
-    image: ghcr.io/hirebarend/lnkbrd:main
-    container_name: lnkbrd-erasmus-sh
-    restart: unless-stopped
-    env_file:
-      - prod.env
-    environment:
-      - LETSENCRYPT_HOST=erasmus.sh
-      - HOST=erasmus.sh
-      - MONGODB_DATABASE_NAME=lnkbrd
-      - VIRTUAL_HOST=erasmus.sh
-      - VIRTUAL_PORT=8080
+      - SECRET=<PLACEHOLDER>
     networks:
       - proxy_network
 

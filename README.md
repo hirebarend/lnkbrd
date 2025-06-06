@@ -42,16 +42,20 @@ cd lnkbrd
 npm install
 
 npm run dev
+
+# Open your browser and go to, http://localhost:8080/
 ```
 
 ### Docker
 
 ```bash
-curl -o prod.env.encrypted https://raw.githubusercontent.com/hirebarend/lnkbrd/refs/heads/main/prod.env.encrypted
+curl -L -O https://raw.githubusercontent.com/hirebarend/lnkbrd/refs/heads/main/docker-compose.yaml
 
-gpg -o prod.env -d prod.env.encrypted
+nano docker-compose.yaml
 
-curl -sL https://raw.githubusercontent.com/hirebarend/lnkbrd/refs/heads/main/docker-compose.yaml | docker compose -f - up -d
+# replace <PLACEHOLDER>
+
+docker compose up -d
 ```
 
 ## Contributing

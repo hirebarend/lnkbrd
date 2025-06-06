@@ -52,7 +52,7 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
     );
 
     if (!link) {
-      container.posthog.capture({
+      container.posthog?.capture({
         distinctId: faker.string.uuid(),
         event: 'code-get',
         groups: {
@@ -90,7 +90,7 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
     }
 
     if (bot) {
-      container.posthog.capture({
+      container.posthog?.capture({
         distinctId: faker.string.uuid(),
         event: 'code-get',
         groups: {
@@ -114,7 +114,7 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
       link.status !== 'active' ||
       (link.expires && link.expires < new Date().getTime())
     ) {
-      container.posthog.capture({
+      container.posthog?.capture({
         distinctId: faker.string.uuid(),
         event: 'code-get',
         groups: {
@@ -177,7 +177,7 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
       // });
     }
 
-    container.posthog.capture({
+    container.posthog?.capture({
       distinctId: faker.string.uuid(),
       event: 'code-get',
       groups: {

@@ -4,7 +4,7 @@ import { PostHog } from 'posthog-node';
 export type Container = {
   db: Db;
   mongoClient: MongoClient;
-  posthog: PostHog;
+  posthog: PostHog | undefined;
 };
 
 let container: Container | null = null;
@@ -23,9 +23,11 @@ export async function getContainer() {
   container = {
     db,
     mongoClient,
-    posthog: new PostHog(process.env.POSTHOG_API_KEY || '', {
-      host: 'https://eu.i.posthog.com',
-    }),
+    posthog: process.env.POSTHOG_API_KEY
+      ? new PostHog(process.env.POSTHOG_API_KEY, {
+          host: 'https://eu.i.posthog.com',
+        })
+      : undefined,
   };
 
   return container;
