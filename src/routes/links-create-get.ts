@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import { FastifyReply, FastifyRequest, RouteOptions } from 'fastify';
 import { Collection } from 'mongodb';
 import { Link, getContainer } from '../core';
+import { openGraph } from './open-graph-get';
 
 export const LINKS_CREATE_GET: RouteOptions<any, any, any, any> = {
   handler: async (
@@ -33,6 +34,7 @@ export const LINKS_CREATE_GET: RouteOptions<any, any, any, any> = {
 
     if (link) {
       reply.status(200).send({
+        clicks: link.clicks,
         url: `https://${process.env.HOST}/${link.code}`,
       });
 
@@ -56,11 +58,14 @@ export const LINKS_CREATE_GET: RouteOptions<any, any, any, any> = {
       externalId: null,
       geoTargeting: [],
       name: null,
-      openGraph: {
-        description: request.query.description || '',
-        image: request.query.image || '',
-        title: request.query.title || '',
-      },
+      openGraph:
+        request.query.description || request.query.image || request.query.title
+          ? {
+              description: request.query.description || '',
+              image: request.query.image || '',
+              title: request.query.title || '',
+            }
+          : await openGraph(request.query.url),
       status: 'active',
       tags: [],
       url: request.query.url,
@@ -73,6 +78,7 @@ export const LINKS_CREATE_GET: RouteOptions<any, any, any, any> = {
     });
 
     reply.status(200).send({
+      clicks: link.clicks,
       url: `https://${process.env.HOST}/${link.code}`,
     });
   },
