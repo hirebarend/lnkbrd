@@ -18,6 +18,10 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
     }>,
     reply: FastifyReply,
   ) => {
+    if (request.params.code === 'privacy-policy') {
+      return reply.view(path.join('public', 'privacy-policy.html'));
+    }
+
     const timestamp: number = new Date().getTime();
 
     const ipAddress: string | null = request.headers['x-real-ip'] || null;
