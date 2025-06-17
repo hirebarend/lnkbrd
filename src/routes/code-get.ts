@@ -8,6 +8,26 @@ import path from 'path';
 import { UAParser } from 'ua-parser-js';
 import { getContainer, Link, PixelEvent } from '../core';
 
+export async function getAutonomousSystem(
+  ipAddress: string | null,
+): Promise<{ name: string; number: number }> {
+  try {
+    const response = await axios.get(
+      `https://asnguard.lnkbrd.com/api/${ipAddress}`,
+    );
+
+    return {
+      name: response.data.as_name,
+      number: response.data.as_number,
+    };
+  } catch {
+    return {
+      name: 'Unknown',
+      number: -1,
+    };
+  }
+}
+
 export const CODE_GET: RouteOptions<any, any, any, any> = {
   handler: async (
     request: FastifyRequest<{
@@ -25,6 +45,8 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
     const timestamp: number = new Date().getTime();
 
     const ipAddress: string | null = request.headers['x-real-ip'] || null;
+
+    const autonomousSystem = await getAutonomousSystem(ipAddress);
 
     const country: string | null = ipAddress
       ? ip3country.lookupStr(ipAddress)
@@ -64,6 +86,9 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
           status: 404,
           url: null,
           user_agent: userAgent,
+
+          autonomous_system_name: autonomousSystem.name,
+          autonomous_system_number: autonomousSystem.number,
         },
       });
 
@@ -102,6 +127,9 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
           status: 200,
           url: null,
           user_agent: userAgent,
+
+          autonomous_system_name: autonomousSystem.name,
+          autonomous_system_number: autonomousSystem.number,
         },
       });
 
@@ -126,6 +154,9 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
           status: 404,
           url: null,
           user_agent: userAgent,
+
+          autonomous_system_name: autonomousSystem.name,
+          autonomous_system_number: autonomousSystem.number,
         },
       });
 
@@ -189,6 +220,9 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
         status: 302,
         url,
         user_agent: userAgent,
+
+        autonomous_system_name: autonomousSystem.name,
+        autonomous_system_number: autonomousSystem.number,
       },
     });
 
