@@ -42,6 +42,12 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
       return reply.view(path.join('public', 'privacy-policy.html'));
     }
 
+    if (request.params.code === 'robots.txt') {
+      reply.type('text/plain').send(`User-agent: *\nDisallow:`);
+
+      return;
+    }
+
     const timestamp: number = new Date().getTime();
 
     const ipAddress: string | null = request.headers['x-real-ip'] || null;
