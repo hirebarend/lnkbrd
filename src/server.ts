@@ -114,18 +114,18 @@ export async function startServer() {
 
   server.route({
     handler: async (request, reply) => {
-      const mappings: Record<string, string | undefined> = process.env
-        .REDIRECT_MAPPINGS
-        ? JSON.parse(process.env.REDIRECT_MAPPINGS)
-        : {};
+      // const mappings: Record<string, string | undefined> = process.env
+      //   .REDIRECT_MAPPINGS
+      //   ? JSON.parse(process.env.REDIRECT_MAPPINGS)
+      //   : {};
 
-      const mapping = mappings[request.host];
+      // const mapping = mappings[request.host];
 
-      if (mapping) {
-        reply.redirect(mapping, 302);
+      // if (mapping) {
+      //   reply.redirect(mapping, 302);
 
-        return;
-      }
+      //   return;
+      // }
 
       reply.redirect('/docs', 302);
     },
