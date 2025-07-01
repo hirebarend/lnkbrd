@@ -81,7 +81,7 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
 
     if (!link) {
       if (!TOKEN_BUCKETS[ipAddress]) {
-        TOKEN_BUCKETS[ipAddress] = new TokenBucket(5, 3);
+        TOKEN_BUCKETS[ipAddress] = new TokenBucket(5, 3, 10 * 60 * 1000);
       }
 
       const rateLimitExceeded: boolean =

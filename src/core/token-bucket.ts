@@ -1,15 +1,14 @@
-const TEN_MINUTES_IN_MILLISECONDS = 10 * 60 * 1000;
-
 export class TokenBucket {
   protected timestamp: number;
   protected tokens: number;
 
   constructor(
-    protected rate: number,
-    protected cap: number,
+    protected tokensPerInterval: number,
+    protected maximumNumberOfTokens: number,
+    protected intervalInMilliseconds: number,
   ) {
     this.timestamp = Date.now();
-    this.tokens = this.cap;
+    this.tokens = this.maximumNumberOfTokens;
   }
 
   public async get(): Promise<boolean> {
@@ -17,19 +16,25 @@ export class TokenBucket {
 
     const elapsedMs: number = now - this.timestamp;
 
-    const tokenIntervalMs = TEN_MINUTES_IN_MILLISECONDS / this.rate;
+    const tokenIntervalMs =
+      this.intervalInMilliseconds / this.tokensPerInterval;
     const tokensToAdd = Math.floor(elapsedMs / tokenIntervalMs);
 
     if (tokensToAdd > 0) {
-      this.tokens = Math.min(this.cap, this.tokens + tokensToAdd);
+      this.tokens = Math.min(
+        this.maximumNumberOfTokens,
+        this.tokens + tokensToAdd,
+      );
       this.timestamp += tokensToAdd * tokenIntervalMs;
     }
 
-    if (this.tokens >= 1) {
-      this.tokens -= 1;
-      return true;
-    }
+    // if (this.tokens >= 1) {
+    //   this.tokens -= 1;
+    //   return true;
+    // }
 
-    return false;
+    this.tokens -= 1;
+
+    return this.tokens >= 0;
   }
 }
