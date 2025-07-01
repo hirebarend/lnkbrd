@@ -84,7 +84,8 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
         TOKEN_BUCKETS[ipAddress] = new TokenBucket(5, 5);
       }
 
-      const rateLimitExceeded: boolean = await TOKEN_BUCKETS[ipAddress].get();
+      const rateLimitExceeded: boolean =
+        !(await TOKEN_BUCKETS[ipAddress].get());
 
       container.posthog?.capture({
         distinctId: faker.string.uuid(),
