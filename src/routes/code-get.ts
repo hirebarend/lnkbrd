@@ -6,7 +6,9 @@ import { isbot } from 'isbot';
 import { Collection } from 'mongodb';
 import path from 'path';
 import { UAParser } from 'ua-parser-js';
-import { getContainer, Link, PixelEvent } from '../core';
+import { getContainer, Link, PixelEvent, TokenBucket } from '../core';
+
+const TOKEN_BUCKETS: { [key: string]: TokenBucket } = {};
 
 export async function getAutonomousSystem(
   ipAddress: string | null,
@@ -50,7 +52,7 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
 
     const timestamp: number = new Date().getTime();
 
-    const ipAddress: string | null = request.headers['x-real-ip'] || null;
+    const ipAddress: string = request.headers['x-real-ip'] || 'unknown';
 
     const autonomousSystem = await getAutonomousSystem(ipAddress);
 
@@ -78,6 +80,12 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
     );
 
     if (!link) {
+      if (!TOKEN_BUCKETS[ipAddress]) {
+        TOKEN_BUCKETS[ipAddress] = new TokenBucket(5, 5);
+      }
+
+      const rateLimitExceeded: boolean = await TOKEN_BUCKETS[ipAddress].get();
+
       container.posthog?.capture({
         distinctId: faker.string.uuid(),
         event: 'code-get',
@@ -95,6 +103,8 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
 
           autonomous_system_name: autonomousSystem.name,
           autonomous_system_number: autonomousSystem.number,
+
+          rateLimitExceeded,
         },
       });
 
@@ -107,6 +117,7 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
         code: request.params.code,
         country,
         ip_address: ipAddress,
+        rateLimitExceeded,
         user_agent: userAgent,
       });
 
