@@ -17,7 +17,7 @@
     "@types/node": "^24.0.10",
     "@types/qrcode": "^1.5.5",
     "@types/qs": "^6.14.0",
-    "jest": "^30.0.3",
+    "jest": "^30.0.4",
     "prettier": "^3.6.2",
     "typescript": "^5.8.3"
   },
