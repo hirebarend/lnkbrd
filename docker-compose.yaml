@@ -44,7 +44,7 @@ services:
     environment:
       - LETSENCRYPT_HOST=<PLACEHOLDER>          # yourdomain.com
       - HOST=<PLACEHOLDER>                      # yourdomain.com
-      - MONGODB_CONNECTION_STRING=mongodb://root:P@ssword!@mongodb:27017/
+      - MONGODB_CONNECTION_STRING=mongodb://root:P%40ssword%21@mongo:27017/
       - MONGODB_DATABASE_NAME=lnkbrd
       # - POSTHOG_API_KEY=<PLACEHOLDER>
       - VIRTUAL_HOST=<PLACEHOLDER>              # yourdomain.com
@@ -57,7 +57,7 @@ services:
 
   mongo:
     image: mongo:latest
-    container_name: mongodb
+    container_name: mongo
     restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
