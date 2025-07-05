@@ -44,12 +44,27 @@ services:
     environment:
       - LETSENCRYPT_HOST=<PLACEHOLDER>          # yourdomain.com
       - HOST=<PLACEHOLDER>                      # yourdomain.com
-      - MONGODB_CONNECTION_STRING=<PLACEHOLDER>
+      - MONGODB_CONNECTION_STRING=mongodb://root:P@ssword!@mongodb:27017/
       - MONGODB_DATABASE_NAME=lnkbrd
-      - POSTHOG_API_KEY=<PLACEHOLDER>
+      # - POSTHOG_API_KEY=<PLACEHOLDER>
       - VIRTUAL_HOST=<PLACEHOLDER>              # yourdomain.com
       - VIRTUAL_PORT=8080
-      - SECRET=<PLACEHOLDER>
+      # - SECRET=<PLACEHOLDER>
+    depends_on:
+      - mongodb
+    networks:
+      - proxy_network
+
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: P@ssword!
+      MONGO_INITDB_DATABASE: lnkbrd
+    volumes:
+      - ./data/mongo:/data/db
     networks:
       - proxy_network
 

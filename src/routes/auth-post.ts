@@ -49,7 +49,7 @@ export const AUTH_POST: RouteOptions<any, any, any, any> = {
     }
 
     reply.status(200).send({
-      token: jsonwebtoken.sign({}, process.env.SECRET || '', {
+      token: jsonwebtoken.sign({}, process.env.SECRET || 'P@ssword!', {
         expiresIn: '365d',
         subject: consumer.username,
       }),

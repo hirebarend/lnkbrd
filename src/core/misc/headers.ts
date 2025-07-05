@@ -26,7 +26,7 @@ export function getConsumerFromHeader(
   try {
     const result: jsonwebtoken.JwtPayload = jsonwebtoken.verify(
       token,
-      process.env.SECRET || '',
+      process.env.SECRET || 'P@ssword!',
     ) as jsonwebtoken.JwtPayload;
 
     return result.sub || '';

@@ -111,17 +111,6 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
 
       reply.status(404).send();
 
-      await container.db.collection<any>('autonomous-systems').insertOne({
-        autonomous_system_name: autonomousSystem.name,
-        autonomous_system_number: autonomousSystem.number,
-        bot,
-        code: request.params.code,
-        country,
-        ip_address: ipAddress,
-        rateLimitExceeded,
-        user_agent: userAgent,
-      });
-
       return;
     }
 

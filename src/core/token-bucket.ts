@@ -28,11 +28,6 @@ export class TokenBucket {
       this.timestamp += tokensToAdd * tokenIntervalMs;
     }
 
-    // if (this.tokens >= 1) {
-    //   this.tokens -= 1;
-    //   return true;
-    // }
-
     this.tokens -= 1;
 
     return this.tokens >= 0;

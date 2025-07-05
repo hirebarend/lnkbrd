@@ -8,6 +8,7 @@ import { isbot } from 'isbot';
 import * as qs from 'qs';
 import { Logger } from './hooks';
 import {
+  ADMIN_LINKS_GET,
   AUTH_POST,
   CODE_GET,
   CODE_QRCODE_GET,
@@ -93,6 +94,8 @@ export async function startServer() {
   await server.register(fastifySwaggerUi, {
     routePrefix: '/docs',
   });
+
+  server.route(ADMIN_LINKS_GET);
 
   server.route(AUTH_POST);
 
