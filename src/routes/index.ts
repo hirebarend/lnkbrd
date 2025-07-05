@@ -1,4 +1,5 @@
 export * from './admin-links-get';
+export * from './admin-links-post';
 export * from './auth-post';
 export * from './code-get';
 export * from './code-qrcode-get';
