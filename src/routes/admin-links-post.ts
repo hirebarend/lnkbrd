@@ -26,5 +26,8 @@ export const ADMIN_LINKS_POST: RouteOptions<any, any, any, any> = {
         apiKey: [],
       },
     ],
+    body: {
+      type: 'array',
+    },
   },
 };
