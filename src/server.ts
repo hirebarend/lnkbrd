@@ -96,9 +96,9 @@ export async function startServer() {
     routePrefix: '/docs',
   });
 
-  server.route(ADMIN_LINKS_GET);
+  // server.route(ADMIN_LINKS_GET);
 
-  server.route(ADMIN_LINKS_POST);
+  // server.route(ADMIN_LINKS_POST);
 
   server.route(AUTH_POST);
 
