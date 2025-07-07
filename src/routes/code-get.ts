@@ -6,29 +6,7 @@ import { isbot } from 'isbot';
 import { Collection } from 'mongodb';
 import path from 'path';
 import { UAParser } from 'ua-parser-js';
-import { getContainer, Link, PixelEvent, TokenBucket } from '../core';
-
-const TOKEN_BUCKETS: { [key: string]: TokenBucket } = {};
-
-export async function getAutonomousSystem(
-  ipAddress: string | null,
-): Promise<{ name: string; number: number }> {
-  try {
-    const response = await axios.get(
-      `https://asnguard.lnkbrd.com/api/${ipAddress}`,
-    );
-
-    return {
-      name: response.data.as_name,
-      number: response.data.as_number,
-    };
-  } catch {
-    return {
-      name: 'Unknown',
-      number: -1,
-    };
-  }
-}
+import { getContainer, Link, PixelEvent } from '../core';
 
 export const CODE_GET: RouteOptions<any, any, any, any> = {
   handler: async (
@@ -54,8 +32,6 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
 
     const ipAddress: string = request.headers['x-real-ip'] || 'unknown';
 
-    const autonomousSystem = await getAutonomousSystem(ipAddress);
-
     const country: string | null = ipAddress
       ? ip3country.lookupStr(ipAddress)
       : null;
@@ -80,13 +56,6 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
     );
 
     if (!link) {
-      if (!TOKEN_BUCKETS[ipAddress]) {
-        TOKEN_BUCKETS[ipAddress] = new TokenBucket(5, 3, 10 * 60 * 1000);
-      }
-
-      const rateLimitExceeded: boolean =
-        !(await TOKEN_BUCKETS[ipAddress].get());
-
       container.posthog?.capture({
         distinctId: faker.string.uuid(),
         event: 'code-get',
@@ -101,11 +70,6 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
           status: 404,
           url: null,
           user_agent: userAgent,
-
-          autonomous_system_name: autonomousSystem.name,
-          autonomous_system_number: autonomousSystem.number,
-
-          rateLimitExceeded,
         },
       });
 
@@ -144,9 +108,6 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
           status: 200,
           url: null,
           user_agent: userAgent,
-
-          autonomous_system_name: autonomousSystem.name,
-          autonomous_system_number: autonomousSystem.number,
         },
       });
 
@@ -171,9 +132,6 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
           status: 404,
           url: null,
           user_agent: userAgent,
-
-          autonomous_system_name: autonomousSystem.name,
-          autonomous_system_number: autonomousSystem.number,
         },
       });
 
@@ -237,9 +195,6 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
         status: 302,
         url,
         user_agent: userAgent,
-
-        autonomous_system_name: autonomousSystem.name,
-        autonomous_system_number: autonomousSystem.number,
       },
     });
 
