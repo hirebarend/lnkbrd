@@ -17,6 +17,8 @@ export type Link = {
 
   geoTargeting: Array<{ country: string; url: string }>;
 
+  metadata: Record<string, string>;
+
   name: string | null;
 
   openGraph: {

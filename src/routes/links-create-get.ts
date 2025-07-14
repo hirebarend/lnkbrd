@@ -57,6 +57,7 @@ export const LINKS_CREATE_GET: RouteOptions<any, any, any, any> = {
       expires: null,
       externalId: null,
       geoTargeting: [],
+      metadata: {},
       name: null,
       openGraph:
         request.query.description || request.query.image || request.query.title

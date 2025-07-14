@@ -11,6 +11,7 @@ export const LINKS_POST: RouteOptions<any, any, any, any> = {
         expires: number | null;
         externalId: string | null;
         geoTargeting: Array<{ country: string; url: string }> | null;
+        metadata: Record<string, string> | null;
         name: string | null;
         openGraph: {
           description: string | null;
@@ -60,6 +61,7 @@ export const LINKS_POST: RouteOptions<any, any, any, any> = {
       expires: request.body.expires,
       externalId: request.body.externalId,
       geoTargeting: request.body.geoTargeting || [],
+      metadata: request.body.metadata || {},
       name: request.body.name,
       openGraph: request.body.openGraph
         ? {
@@ -104,6 +106,10 @@ export const LINKS_POST: RouteOptions<any, any, any, any> = {
               url: { type: 'string' },
             },
           },
+          nullable: true,
+        },
+        metadata: {
+          type: 'object',
           nullable: true,
         },
         name: { type: 'string', nullable: true },

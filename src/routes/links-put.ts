@@ -9,6 +9,7 @@ export const LINKS_PUT: RouteOptions<any, any, any, any> = {
         expires: number | null;
         externalId: string | null;
         geoTargeting: Array<{ country: string; url: string }>;
+        metadata: Record<string, string>;
         name: string | null;
         openGraph: {
           description: string;
@@ -50,6 +51,7 @@ export const LINKS_PUT: RouteOptions<any, any, any, any> = {
           expires: request.body.expires,
           externalId: request.body.externalId,
           geoTargeting: request.body.geoTargeting,
+          metadata: request.body.metadata,
           name: request.body.name,
           openGraph: request.body.openGraph,
           tags: request.body.tags,
@@ -85,6 +87,10 @@ export const LINKS_PUT: RouteOptions<any, any, any, any> = {
               url: { type: 'string' },
             },
           },
+        },
+        metadata: {
+          type: 'object',
+          nullable: true,
         },
         name: { type: 'string', nullable: true },
         openGraph: {

@@ -8,8 +8,8 @@ import { isbot } from 'isbot';
 import * as qs from 'qs';
 import { Logger } from './hooks';
 import {
-  ADMIN_LINKS_GET,
-  ADMIN_LINKS_POST,
+  // ADMIN_LINKS_GET,
+  // ADMIN_LINKS_POST,
   AUTH_POST,
   CODE_GET,
   CODE_QRCODE_GET,

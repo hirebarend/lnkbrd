@@ -175,10 +175,13 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
     );
 
     if (link.webhook) {
-      // await BasicHttpGateway.post(link.webhook, {
-      //   link,
-      //   pixelEvent,
-      // });
+      // TODO: use openwebhooks.io
+      try {
+        await axios.post(link.webhook, {
+          link,
+          pixelEvent,
+        });
+      } catch {}
     }
 
     container.posthog?.capture({
