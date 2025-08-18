@@ -56,23 +56,6 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
     );
 
     if (!link) {
-      container.posthog?.capture({
-        distinctId: faker.string.uuid(),
-        event: 'code-get',
-        groups: {
-          code: request.params.code,
-        },
-        properties: {
-          bot,
-          code: request.params.code,
-          country,
-          ip_address: ipAddress,
-          status: 404,
-          url: null,
-          user_agent: userAgent,
-        },
-      });
-
       reply.status(404).send();
 
       return;
@@ -94,23 +77,6 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
     }
 
     if (bot) {
-      container.posthog?.capture({
-        distinctId: faker.string.uuid(),
-        event: 'code-get',
-        groups: {
-          code: request.params.code,
-        },
-        properties: {
-          bot,
-          code: request.params.code,
-          country,
-          ip_address: ipAddress,
-          status: 200,
-          url: null,
-          user_agent: userAgent,
-        },
-      });
-
       return reply.view(path.join('public', 'index-static-bot.html'), link);
     }
 
@@ -118,23 +84,6 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
       link.status !== 'active' ||
       (link.expires && link.expires < new Date().getTime())
     ) {
-      container.posthog?.capture({
-        distinctId: faker.string.uuid(),
-        event: 'code-get',
-        groups: {
-          code: request.params.code,
-        },
-        properties: {
-          bot,
-          code: request.params.code,
-          country,
-          ip_address: ipAddress,
-          status: 404,
-          url: null,
-          user_agent: userAgent,
-        },
-      });
-
       reply.status(404).send();
 
       return;
@@ -183,23 +132,6 @@ export const CODE_GET: RouteOptions<any, any, any, any> = {
         });
       } catch {}
     }
-
-    container.posthog?.capture({
-      distinctId: faker.string.uuid(),
-      event: 'code-get',
-      groups: {
-        code: request.params.code,
-      },
-      properties: {
-        bot,
-        code: request.params.code,
-        country,
-        ip_address: ipAddress,
-        status: 302,
-        url,
-        user_agent: userAgent,
-      },
-    });
 
     reply.redirect(url, 302);
   },

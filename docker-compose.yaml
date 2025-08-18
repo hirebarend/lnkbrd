@@ -46,7 +46,6 @@ services:
       - HOST=<PLACEHOLDER>                      # yourdomain.com
       - MONGODB_CONNECTION_STRING=mongodb://root:P%40ssword%21@mongo:27017/
       - MONGODB_DATABASE_NAME=lnkbrd
-      # - POSTHOG_API_KEY=<PLACEHOLDER>
       - VIRTUAL_HOST=<PLACEHOLDER>              # yourdomain.com
       - VIRTUAL_PORT=8080
       # - SECRET=<PLACEHOLDER>
