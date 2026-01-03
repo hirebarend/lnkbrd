@@ -25,7 +25,7 @@
     "@faker-js/faker": "^10.1.0",
     "@fastify/cors": "^11.2.0",
     "@fastify/swagger": "^9.6.1",
-    "@fastify/swagger-ui": "^5.2.3",
+    "@fastify/swagger-ui": "^5.2.4",
     "@fastify/view": "^11.1.1",
     "axios": "^1.13.2",
     "cheerio": "^1.1.2",
