@@ -33,7 +33,7 @@
     "fastify": "^5.7.1",
     "handlebars": "^4.7.8",
     "ip3country": "^5.0.0",
-    "isbot": "^5.1.32",
+    "isbot": "^5.1.33",
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^7.0.0",
     "qrcode": "^1.5.4",
