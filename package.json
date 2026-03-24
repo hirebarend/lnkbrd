@@ -35,7 +35,7 @@
     "ip3country": "^5.0.0",
     "isbot": "^5.1.36",
     "jsonwebtoken": "^9.0.3",
-    "mongodb": "^7.1.0",
+    "mongodb": "^7.1.1",
     "qrcode": "^1.5.4",
     "qs": "^6.15.0",
     "ua-parser-js": "^2.0.9"
