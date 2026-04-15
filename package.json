@@ -30,7 +30,7 @@
     "axios": "^1.14.1",
     "cheerio": "^1.2.0",
     "dotenv": "^17.4.2",
-    "fastify": "^5.8.4",
+    "fastify": "^5.8.5",
     "handlebars": "^4.7.9",
     "ip3country": "^5.0.0",
     "isbot": "^5.1.38",
